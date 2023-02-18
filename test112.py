@@ -1,18 +1,19 @@
 
 import streamlit as st
 import pandas as pd
-from datetime import timedelta
 from dateutil.relativedelta import relativedelta 
 from datetime import datetime
-import matplotlib.pyplot as plt
 from PIL import Image
-import base64
+import requests
 # Set page title and icon
 st.set_page_config(page_title="NRE Estimate", page_icon=":money_with_wings:")
 
 # Define title and image
 st.title("NRE Estimate")
-img = Image.open("C:\\Users\\cchau\\OneDrive\\Pictures\\Odds Logo.jpg")
+img_url ="https://raw.githubusercontent.com/Chint998/streamlit/main/team.png"
+xurl='https://raw.githubusercontent.com/Chint998/streamlit/main/Copy of master.xlsx'
+response = requests.get(xurl)
+img = Image.open(requests.get(img_url, stream=True).raw)
 st.image(img, width=100)
 # Create a divider line
 st.markdown("---")
@@ -63,7 +64,7 @@ def calculate_values(row):
     
     peak = row["peak"]
 
-    Multiply_values = pd.read_excel("D:\Copy of master.xlsx", sheet_name = None)
+    Multiply_values = pd.read_excel(response.content,engine="openpyxl", sheet_name = None)
     if row["Team Name"] not in Multiply_values:
         #print("Not in Master sheet and taking default")
         TeamName = "default"
